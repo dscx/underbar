@@ -39,7 +39,11 @@ var _ = {};
   // Like first, but for the last elements. If n is undefined, return just the
   // last element.
   _.last = function(array, n) {
-    return n === undefined ? array[array.length - 1] : array.slice(0, n);
+    if (n === 0) {
+      return array.slice(0,0);
+    } else {
+      return n === undefined ? array[array.length - 1] : array.slice(-n);
+    }
   };
 
   // Call iterator(value, key, collection) for each element of collection.
@@ -48,10 +52,16 @@ var _ = {};
   // Note: _.each does not have a return value, but rather simply runs the
   // iterator function over each item in the input collection.
   _.each = function(collection, iterator) {
-    iterator.value
-
-
-  };
+     if (Array.isArray(collection)) {
+       for (var i = 0; i < collection.length; i++) {
+       iterator(collection[i], i, collection);
+       }
+     } else {
+        for (var key in collection) {
+          iterator(collection[key], key, collection);
+        }
+     }
+    };
 
   // Returns the index at which value can be found in the array, or -1 if value
   // is not present in the array.
@@ -72,6 +82,7 @@ var _ = {};
 
   // Return all elements of an array that pass a truth test.
   _.filter = function(collection, test) {
+    
   };
 
   // Return all elements of an array that don't pass a truth test.
@@ -82,7 +93,8 @@ var _ = {};
 
   // Produce a duplicate-free version of the array.
   _.uniq = function(array) {
-  };
+
+      };
 
 
   // Return the results of applying an iterator to each element.
@@ -129,6 +141,7 @@ var _ = {};
   //     return total + number;
   //   }, 0); // should be 6
   _.reduce = function(collection, iterator, accumulator) {
+
   };
 
   // Determine if the array or object contains a given value (using `===`).
