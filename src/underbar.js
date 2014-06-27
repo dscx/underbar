@@ -149,16 +149,16 @@ var _ = {};
   // Calls the method named by methodName on each value in the list.
   // Note: you will nead to learn a bit about .apply to complete this.
   _.invoke = function(collection, functionOrKey, args) {
-    if (typeof functionOrKey === "function") {
-      return _.map(collection, function(value){
-       return functionOrKey.apply(value, args);
-    });
-    } else {
-       return _.map(collection, function(value) {
-       return value[functionOrKey].apply(value, args);
+     if (typeof functionOrKey === "function") {
+        return _.map(collection, function(value) {
+          return functionOrKey.apply(value, args);
+        });
+     } else {
+        return _.map(collection, function(value) {
+          return value[functionOrKey].apply(value, args);
+        });
+     }
 
-    });
-    }
   };
 
   // Reduces an array or object to a single value by repetitively calling
@@ -197,12 +197,31 @@ var _ = {};
   // Determine whether all of the elements match a truth test.
   _.every = function(collection, iterator) {
     // TIP: Try re-using reduce() here.
+     iterator = (iterator === undefined) ? function(item){return item;} : iterator;
+     return _.reduce(collection, function(result, item){
+       if ( result && iterator(item)) {
+        return true;
+      } else {
+        return false;
+      }
+
+     }, true);
+
   };
 
   // Determine whether any of the elements pass a truth test. If no iterator is
   // provided, provide a default one
   _.some = function(collection, iterator) {
     // TIP: There's a very clever way to re-use every() here.
+    iterator = (iterator === undefined) ? function(item){return item;} : iterator;
+    return _.reduce(collection, function(result, item) {
+      if (result || iterator(item)) {
+        return true;
+      } else {
+        return false;
+      }
+    }, false);
+
   };
 
 
