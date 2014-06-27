@@ -172,7 +172,10 @@ var _ = {};
   //     return total + number;
   //   }, 0); // should be 6
   _.reduce = function(collection, iterator, accumulator) {
-
+      var result = accumulator === undefined ? collection[0] : accumulator;
+      for (var i = 0; i < collection.length; i++)
+        result = iterator(result, collection[i]);
+      return result;
   };
 
   // Determine if the array or object contains a given value (using `===`).
@@ -317,6 +320,12 @@ var _ = {};
   //
   // Hint: Use Array.isArray to check if something is an array
   _.flatten = function(nestedArray, result) {
+      if (Array.isArray(nestedArray)) {
+        var results = [];
+        return _.each(nestedArray, function(value) {
+          results.push(value);
+        });
+      }
   };
 
   // Takes an arbitrary number of arrays and produces an array that contains
