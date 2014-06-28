@@ -176,9 +176,17 @@ var _ = {};
   //   }, 0); // should be 6
   _.reduce = function(collection, iterator, accumulator) {
       var result = accumulator === undefined ? collection[0] : accumulator;
-      for (var i = 0; i < collection.length; i++)
-        result = iterator(result, collection[i]);
-      return result;
+      if(Array.isArray(collection)) {
+        for (var i = 0; i < collection.length; i++)
+          result = iterator(result, collection[i]);
+       
+      } else {
+        for(var key in collection) {
+            iterator(result, collection[key]);
+        }
+
+      }
+       return result;
   };
 
   // Determine if the array or object contains a given value (using `===`).
@@ -196,7 +204,6 @@ var _ = {};
 
   // Determine whether all of the elements match a truth test.
   _.every = function(collection, iterator) {
-    // TIP: Try re-using reduce() here.
      iterator = (iterator === undefined) ? function(item){return item;} : iterator;
      return _.reduce(collection, function(result, item){
        if ( result && iterator(item)) {
@@ -244,11 +251,25 @@ var _ = {};
   //     bla: "even more stuff"
   //   }); // obj1 now contains key1, key2, key3 and bla
   _.extend = function(obj) {
+    _.each(arguments,function(item){
+        for(var key in item){
+          obj[key] = item[key];
+        }
+    });
+    return obj;
   };
 
   // Like extend, but doesn't ever overwrite a key that already
   // exists in obj
   _.defaults = function(obj) {
+    _.each(arguments,function(item){
+        for(var key in item){
+          if (obj[key] === undefined) {
+            obj[key] = item[key];
+          }
+        }
+    });
+    return obj;
   };
 
 
@@ -290,6 +311,8 @@ var _ = {};
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
+    var result = _.once(func);
+     return(result);
   };
 
   // Delays a function for the given number of milliseconds, and then calls
