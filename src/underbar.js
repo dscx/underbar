@@ -175,19 +175,15 @@ var _ = {};
   //     return total + number;
   //   }, 0); // should be 6
   _.reduce = function(collection, iterator, accumulator) {
-      var result = accumulator === undefined ? collection[0] : accumulator;
-      if(Array.isArray(collection)) {
-        for (var i = 0; i < collection.length; i++)
-          result = iterator(result, collection[i]);
-       
-      } else {
-        for(var key in collection) {
-            iterator(result, collection[key]);
+      _.each(collection, function(val){
+        if(accumulator ===undefined){
+           accumulator = val;
         }
-
-      }
-       return result;
+        accumulator = iterator(accumulator, val);
+    });
+    return accumulator;
   };
+
 
   // Determine if the array or object contains a given value (using `===`).
   _.contains = function(collection, target) {
